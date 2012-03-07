@@ -1,74 +1,45 @@
 package com.sl.mimc;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 public class MiMCActivity extends Activity {
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new MiMCActivityGridAdapter(this));
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
 
-        gridview.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(MiMCActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-                
-                if (position == 0) {
-                	BufferedReader in = null;
-                    try {
-                        HttpClient client = new DefaultHttpClient();
-                        HttpGet request = new HttpGet();
-                        request.setURI(new URI("https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=latest&format=html"));
-                        HttpResponse response = client.execute(request);
-                        in = new BufferedReader
-                        (new InputStreamReader(response.getEntity().getContent()));
-                        StringBuffer sb = new StringBuffer("");
-                        String line = "";
-                        String NL = System.getProperty("line.separator");
-                        while ((line = in.readLine()) != null) {
-                            sb.append(line + NL);
-                        }
-                        in.close();
-                        String page = sb.toString();
-                        System.out.println(page);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    }
-                    finally {
-                        if (in != null) {
-                            try {
-                                in.close();
-                                } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        
-        
-    }
+
+	}
+
+	public void onClick(View v) {
+		final TextView view = (TextView) v;
+		if (view != null) {
+			String text = (String) view.getText();
+
+			if (text == getText(R.string.latest)) {
+				view.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.contact, 0, 0);
+				
+				new CountDownTimer(100, 100) {
+					public void onFinish() {
+						
+						view.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.latest, 0, 0);
+					}
+					public void onTick(long millisUntilFinished) {}
+				}.start();
+				
+				Intent intent = new Intent(this, LatestActivity.class);
+				startActivity(intent);
+				
+//				NBAPIResponse nbapi = new NBAPIResponse();
+//				String response =
+//				nbapi.getText("https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=latest");
+			}
+		}
+	}
 }

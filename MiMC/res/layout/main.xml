@@ -2,23 +2,75 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="2" >
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:background="#000000"
+        android:drawableLeft="@drawable/ic_launcher"
+        android:gravity="center_vertical"
+        android:text="@string/main"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
 
-    
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android" 
-	    android:id="@+id/gridview"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="fill_parent"
-	    android:columnWidth="150dp"
-	    android:numColumns="auto_fit"
-	    android:verticalSpacing="10dp"
-	    android:horizontalSpacing="10dp"
-	    android:stretchMode="columnWidth"
-	    android:gravity="center" />
-    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingBottom="50sp"
+        android:weightSum="2" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableTop="@drawable/latest"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:text="@string/latest"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/contact"
+            android:gravity="center"
+            android:text="@string/contact"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="top"
+        android:orientation="horizontal"
+        android:paddingTop="50sp"
+        android:weightSum="2" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/categories"
+            android:gravity="center"
+            android:text="@string/categories"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/archive"
+            android:gravity="center"
+            android:text="@string/archive"
+            android:textSize="18sp" />
+    </LinearLayout>
+
 </LinearLayout>
