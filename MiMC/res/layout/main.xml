@@ -39,8 +39,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/contact"
             android:gravity="center"
+            android:onClick="onClick"
             android:text="@string/contact"
             android:textSize="18sp" />
     </LinearLayout>
@@ -58,8 +60,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/categories"
             android:gravity="center"
+            android:onClick="onClick"
             android:text="@string/categories"
             android:textSize="18sp" />
 
@@ -67,8 +71,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/archive"
             android:gravity="center"
+            android:onClick="onClick"
             android:text="@string/archive"
             android:textSize="18sp" />
     </LinearLayout>

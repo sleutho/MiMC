@@ -36,9 +36,9 @@ public class MiMCActivity extends Activity {
 				Intent intent = new Intent(this, LatestActivity.class);
 				startActivity(intent);
 				
-//				NBAPIResponse nbapi = new NBAPIResponse();
-//				String response =
-//				nbapi.getText("https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=latest");
+			} else if (text == getText(R.string.categories)) {
+				Intent intent = new Intent(this, ListsActivity.class);
+				startActivity(intent);
 			}
 		}
 	}
