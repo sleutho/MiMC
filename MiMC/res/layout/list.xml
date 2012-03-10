@@ -11,7 +11,7 @@
         android:background="#000000"
         android:drawableLeft="@drawable/ic_launcher"
         android:gravity="center_vertical"
-        android:text="@string/categories"
+        android:text="@string/listTitle"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -19,13 +19,13 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clickable="true" />
 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FF0000"
-        android:text="No data" />
+        android:text="@string/nodata" />
 
 </LinearLayout>

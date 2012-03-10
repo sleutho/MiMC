@@ -11,7 +11,7 @@
         android:background="#000000"
         android:drawableLeft="@drawable/ic_launcher"
         android:gravity="center_vertical"
-        android:text="@string/latest"
+        android:text="@string/entry"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
