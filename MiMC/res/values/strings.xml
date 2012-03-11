@@ -7,11 +7,13 @@
     <string name="contact">Contact</string>
     <string name="main">Me in Motor City</string>
     <string name="entry"></string>
-    <string name="progressMsg">Loading ...</string>
+    <string name="progressMsg">Loading &#8230;</string>
     <string name="latest">Latest</string>
     <string name="nodata"></string>
-    <string name="list">List</string>
     <string name="progressTitle"/>
     <string name="listTitle"/>
+    <string name="sendMail">Send mail &#8230;</string>
+    <string name="noConnection">No Internet Connection</string>
+    <string name="noConnectionClose">Close</string>
 
 </resources>

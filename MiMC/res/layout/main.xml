@@ -2,81 +2,94 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:weightSum="2" >
+    android:orientation="vertical" >
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#000000"
-        android:drawableLeft="@drawable/ic_launcher"
+        android:background="#4A525A"
+        android:drawableLeft="@drawable/banner"
         android:gravity="center_vertical"
         android:text="@string/main"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-    <LinearLayout
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        android:paddingBottom="50sp"
-        android:weightSum="2" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-        <TextView
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:drawableTop="@drawable/latest"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="@string/latest"
-            android:textSize="18sp" />
+            android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:drawableTop="@drawable/contact"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="@string/contact"
-            android:textSize="18sp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="30sp"
+                android:weightSum="2" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:gravity="top"
-        android:orientation="horizontal"
-        android:paddingTop="50sp"
-        android:weightSum="2" >
+                <TextView
+                    android:id="@+id/latest"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/latest"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="@string/latest"
+                    android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:drawableTop="@drawable/categories"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="@string/categories"
-            android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/contact"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/contact"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="@string/contact"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:drawableTop="@drawable/archive"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="@string/archive"
-            android:textSize="18sp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="30sp"
+                android:weightSum="2" >
+
+                <TextView
+                    android:id="@+id/categories"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/categories"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="@string/categories"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/archive"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/archive"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="@string/archive"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

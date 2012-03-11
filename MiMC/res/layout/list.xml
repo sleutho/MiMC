@@ -8,8 +8,8 @@
         android:id="@+id/textview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#000000"
-        android:drawableLeft="@drawable/ic_launcher"
+        android:background="#4A525A"
+        android:drawableLeft="@drawable/banner"
         android:gravity="center_vertical"
         android:text="@string/listTitle"
         android:textColor="#ffffff"
@@ -18,7 +18,7 @@
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
         android:layout_weight="1"
         android:clickable="true" />
 
