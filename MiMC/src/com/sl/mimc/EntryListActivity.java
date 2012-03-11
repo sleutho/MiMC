@@ -35,6 +35,10 @@ public class EntryListActivity extends ListActivity {
 			setListAdapter(listAdapter);
 
 			progressDialog.dismiss();
+			
+			if (mylist.isEmpty()) {
+				ErrorNotification.noConnection(EntryListActivity.this);
+			}
 		}
 	};
 
@@ -60,25 +64,29 @@ public class EntryListActivity extends ListActivity {
 
 				JSONArray json = null;
 				try {
-					json = new JSONArray(response);
+					if (response != null)
+						json = new JSONArray(response);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 
 				mylist = new ArrayList<HashMap<String, String>>();
-				try {
-					for (int i = 0; i != json.length(); ++i) {
-						JSONObject obj = json.getJSONObject(i);
+				if (json != null) {
+					try {
 
-						HashMap<String, String> map = new HashMap<String, String>();
-						map.put("tag", obj.getString("tag"));
-						JSONObject data = obj.getJSONObject("data");
-						map.put("title", data.getString("TITLE"));
-						map.put("date", data.getString("DATE"));
-						mylist.add(map);
+						for (int i = 0; i != json.length(); ++i) {
+							JSONObject obj = json.getJSONObject(i);
+
+							HashMap<String, String> map = new HashMap<String, String>();
+							map.put("tag", obj.getString("tag"));
+							JSONObject data = obj.getJSONObject("data");
+							map.put("title", data.getString("TITLE"));
+							map.put("date", data.getString("DATE"));
+							mylist.add(map);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
-				} catch (JSONException e) {
-					e.printStackTrace();
 				}
 
 				handler.sendEmptyMessage(0);

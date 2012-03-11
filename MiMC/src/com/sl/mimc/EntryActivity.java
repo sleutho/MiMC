@@ -23,6 +23,10 @@ public class EntryActivity extends Activity {
 			webView.loadUrl(data.getString("link"));
 
 			progressDialog.dismiss();
+			
+			if (data.getString("title").length() == 0) {
+				ErrorNotification.noConnection(EntryActivity.this);
+			}
 		}
 	};
 
@@ -42,7 +46,10 @@ public class EntryActivity extends Activity {
 		Intent intent = getIntent();
 		latest = intent.getExtras().getBoolean("latest", false);
 
-		if (!latest) {
+		if (latest) {
+			entryTag = "";
+			title = "";
+		} else {
 			entryTag = intent.getExtras().getString("entryTag");
 			title = intent.getExtras().getString("entryTitle");
 		}
@@ -59,17 +66,20 @@ public class EntryActivity extends Activity {
 
 					JSONObject json = null;
 					try {
-						json = new JSONObject(response);
+						if (response != null)
+							json = new JSONObject(response);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 
-					try {
-						entryTag = json.getString("tag");
-						json = json.getJSONObject("data");
-						title = json.getString("TITLE");
-					} catch (JSONException e) {
-						e.printStackTrace();
+					if (json != null) {
+						try {
+							entryTag = json.getString("tag");
+							json = json.getJSONObject("data");
+							title = json.getString("TITLE");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 

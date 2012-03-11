@@ -11,6 +11,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.text.Html;
+import android.text.Spanned;
+
 public class NBAPIResponse {
 
 	public String getText(String url) {
@@ -32,7 +35,8 @@ public class NBAPIResponse {
                 sb.append(line + NL);
             }
             in.close();
-            return sb.toString();
+            Spanned span = Html.fromHtml(sb.toString());
+            return span.toString();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
