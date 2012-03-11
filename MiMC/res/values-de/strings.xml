@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Me &amp; Detroit</string>
+    <string name="archive">Archiv</string>
+    <string name="categories">Kategorien</string>
+    <string name="contact">Kontakt</string>
+    <string name="main">Me in Motor City</string>
+    <string name="entry"></string>
+    <string name="progressMsg">Laden …</string>
+    <string name="latest">Letzter Eintrag</string>
+    <string name="nodata"></string>
+    <string name="progressTitle"/>
+    <string name="listTitle"/>
+    <string name="sendMail">Email …</string>
+    <string name="noConnection">Keine Internetverbindung</string>
+    <string name="noConnectionClose">Beenden</string>
+
+</resources>
