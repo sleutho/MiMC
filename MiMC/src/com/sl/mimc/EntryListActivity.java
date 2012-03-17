@@ -107,11 +107,13 @@ public class EntryListActivity extends ListActivity {
 				String title = (String)col1.getText();
 				//find tag
 				String tag = null;
+				String date = null;
 				Iterator<HashMap<String, String>> itr = mylist.iterator();
 			    while (itr.hasNext()) {
 			    	HashMap<String, String> element = itr.next();
 			        if (element.get("title") == title) {
 			        	tag = element.get("tag");
+			        	date = element.get("date");
 			        	break;
 			        }
 			    }
@@ -119,6 +121,7 @@ public class EntryListActivity extends ListActivity {
 				Intent intent = new Intent(EntryListActivity.this, EntryActivity.class);
 				intent.putExtra("entryTitle", title);
 				intent.putExtra("entryTag", tag);
+				intent.putExtra("entryDate", date);
 				startActivity(intent);
 			}
 		});

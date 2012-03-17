@@ -20,6 +20,7 @@ public class EntryActivity extends Activity {
 			Bundle data = msg.getData();
 
 			titleTextView.setText(data.getString("title"));
+			dateTextView.setText(data.getString("date"));
 			webView.loadUrl(data.getString("link"));
 
 			progressDialog.dismiss();
@@ -38,6 +39,7 @@ public class EntryActivity extends Activity {
 				getText(R.string.progressTitle), getText(R.string.progressMsg));
 
 		titleTextView = (TextView) findViewById(R.id.textview);
+		dateTextView = (TextView) findViewById(R.id.date);
 
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
@@ -49,9 +51,11 @@ public class EntryActivity extends Activity {
 		if (latest) {
 			entryTag = "";
 			title = "";
+			date = "";
 		} else {
 			entryTag = intent.getExtras().getString("entryTag");
 			title = intent.getExtras().getString("entryTitle");
+			date = intent.getExtras().getString("entryDate");
 		}
 
 		new Thread(new Runnable() {
@@ -77,6 +81,7 @@ public class EntryActivity extends Activity {
 							entryTag = json.getString("tag");
 							json = json.getJSONObject("data");
 							title = json.getString("TITLE");
+							date = json.getString("DATE");
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
@@ -86,6 +91,7 @@ public class EntryActivity extends Activity {
 				Message msg = handler.obtainMessage();
 				Bundle data = new Bundle();
 				data.putString("title", title);
+				data.putString("date", date);
 				data.putString("link", link + entryTag);
 				msg.setData(data);
 				handler.sendMessage(msg);
@@ -96,11 +102,13 @@ public class EntryActivity extends Activity {
 
 	private ProgressDialog progressDialog;
 	private TextView titleTextView;
+	private TextView dateTextView;
 	private WebView webView;
 
 	private boolean latest;
 	private String entryTag;
 	private String title;
+	private String date;
 	
 	private final String link = "https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=entry&tag=";
 }
