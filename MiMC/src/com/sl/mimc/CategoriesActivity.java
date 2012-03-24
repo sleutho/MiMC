@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +22,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-public class CategoriesActivity extends ListActivity {
+public class CategoriesActivity extends ListActivity implements DialogInterface.OnCancelListener {
 
 	final Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -40,18 +41,32 @@ public class CategoriesActivity extends ListActivity {
 			}
 		}
 	};
+	
+	public void onStop() {
+		super.onStop();
+		
+		if (requestThread != null &&
+				requestThread.isAlive())
+			requestThread.interrupt();
+	}
+	
+	public void onCancel (DialogInterface dialog) {
+		finish();
+	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
 
+		requestThread = null;
+		
 		TextView titleTextView = (TextView) findViewById(R.id.textview);
 		titleTextView.setText(R.string.categories);
 
 		progressDialog = ProgressDialog.show(this,
-				getText(R.string.progressTitle), getText(R.string.progressMsg));
+				getText(R.string.progressTitle), getText(R.string.progressMsg), true, true, this);
 
-		new Thread(new Runnable() {
+		requestThread = new Thread(new Runnable() {
 			public void run() {
 
 				NBAPIResponse nbapi = new NBAPIResponse();
@@ -84,7 +99,8 @@ public class CategoriesActivity extends ListActivity {
 
 				handler.sendEmptyMessage(0);
 			}
-		}).start();
+		});
+		requestThread.start();
 
 		ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
@@ -108,7 +124,8 @@ public class CategoriesActivity extends ListActivity {
 		});
 		
 	}
-
+	
+	private Thread requestThread;
 	private ProgressDialog progressDialog;
 	private static ArrayList<HashMap<String, String>> mylist;
 }

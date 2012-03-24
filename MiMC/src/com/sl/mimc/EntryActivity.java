@@ -5,38 +5,65 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-public class EntryActivity extends Activity {
+public class EntryActivity extends Activity implements DialogInterface.OnCancelListener {
 
 	final Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 
 			Bundle data = msg.getData();
+			
+			if (data.containsKey("onPageFinished"))
+			{
+				if (progressDialog.isShowing())
+					progressDialog.dismiss();
+				return;
+			}
 
 			titleTextView.setText(data.getString("title"));
 			dateTextView.setText(data.getString("date"));
 			webView.loadUrl(data.getString("link"));
 
-			progressDialog.dismiss();
-			
 			if (data.getString("title").length() == 0) {
 				ErrorNotification.noConnection(EntryActivity.this);
 			}
 		}
 	};
+	
+	public void onStop() {
+		super.onStop();
+		
+		if (requestThread != null &&
+				requestThread.isAlive())
+			requestThread.interrupt();
+			
+		Message msg = handler.obtainMessage();
+		Bundle data = new Bundle();
+		data.putBoolean("onPageFinished", true);
+		msg.setData(data);
+		handler.sendMessage(msg);
+	}
+	
+	public void onCancel (DialogInterface dialog) {
+		finish();
+	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry);
+		
+		requestThread = null;
 
 		progressDialog = ProgressDialog.show(this,
-				getText(R.string.progressTitle), getText(R.string.progressMsg));
+				getText(R.string.progressTitle), getText(R.string.progressMsg), true, true, this);
 
 		titleTextView = (TextView) findViewById(R.id.textview);
 		dateTextView = (TextView) findViewById(R.id.date);
@@ -44,6 +71,19 @@ public class EntryActivity extends Activity {
 		webView = (WebView) findViewById(R.id.webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setSupportZoom(true);
+		
+		webView.setWebViewClient(new WebViewClient() {
+			public void onPageFinished(WebView view, String url)
+			{
+				Message msg = handler.obtainMessage();
+				Bundle data = new Bundle();
+				data.putBoolean("onPageFinished", true);
+				msg.setData(data);
+				handler.sendMessage(msg);
+			}
+		});
+
+		
 
 		Intent intent = getIntent();
 		latest = intent.getExtras().getBoolean("latest", false);
@@ -58,7 +98,7 @@ public class EntryActivity extends Activity {
 			date = intent.getExtras().getString("entryDate");
 		}
 
-		new Thread(new Runnable() {
+		requestThread = new Thread(new Runnable() {
 			public void run() {
 
 				NBAPIResponse nbapi = new NBAPIResponse();
@@ -96,14 +136,16 @@ public class EntryActivity extends Activity {
 				msg.setData(data);
 				handler.sendMessage(msg);
 			}
-		}).start();
-
+		});
+		requestThread.start();
 	}
 
 	private ProgressDialog progressDialog;
 	private TextView titleTextView;
 	private TextView dateTextView;
 	private WebView webView;
+	
+	private Thread requestThread;
 
 	private boolean latest;
 	private String entryTag;
