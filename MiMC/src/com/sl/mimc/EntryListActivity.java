@@ -62,9 +62,10 @@ public class EntryListActivity extends ListActivity implements DialogInterface.O
 		requestThread = null;
 		
 		Bundle bundle = getIntent().getExtras();
+		category = bundle.getString("entryListTitle");
 
 		TextView titleTextView = (TextView) findViewById(R.id.textview);
-		titleTextView.setText(bundle.getString("entryListTitle"));
+		titleTextView.setText(category);
 		
 		serverQuery = bundle.getString("entryListQuery");
 
@@ -97,6 +98,9 @@ public class EntryListActivity extends ListActivity implements DialogInterface.O
 							JSONObject data = obj.getJSONObject("data");
 							map.put("title", data.getString("TITLE"));
 							map.put("date", data.getString("DATE"));
+							map.put("forward", data.getString("NEXT"));
+							map.put("back", data.getString("BACK"));
+							map.put("link", data.getString("PERMALINK"));
 							mylist.add(map);
 						}
 					} catch (JSONException e) {
@@ -124,12 +128,18 @@ public class EntryListActivity extends ListActivity implements DialogInterface.O
 				//find tag
 				String tag = null;
 				String date = null;
+				String back = null;
+				String forward = null;
+				String link = null;
 				Iterator<HashMap<String, String>> itr = mylist.iterator();
 			    while (itr.hasNext()) {
 			    	HashMap<String, String> element = itr.next();
 			        if (element.get("title") == title) {
 			        	tag = element.get("tag");
 			        	date = element.get("date");
+			        	back = element.get("back");
+			        	forward = element.get("forward");
+			        	link = element.get("link");
 			        	break;
 			        }
 			    }
@@ -137,7 +147,11 @@ public class EntryListActivity extends ListActivity implements DialogInterface.O
 				Intent intent = new Intent(EntryListActivity.this, EntryActivity.class);
 				intent.putExtra("entryTitle", title);
 				intent.putExtra("entryTag", tag);
+				intent.putExtra("entryBack", back);
+				intent.putExtra("entryForward", forward);
 				intent.putExtra("entryDate", date);
+				intent.putExtra("entryLink", link);
+				intent.putExtra("entryCategory", category);
 				startActivity(intent);
 			}
 		});
@@ -146,6 +160,7 @@ public class EntryListActivity extends ListActivity implements DialogInterface.O
 	
 	private Thread requestThread;
 	private String serverQuery;
+	private String category;
 	private ProgressDialog progressDialog;
 	private static ArrayList<HashMap<String, String>> mylist;
 }

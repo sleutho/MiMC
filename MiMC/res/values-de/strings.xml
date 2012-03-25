@@ -15,5 +15,8 @@
     <string name="sendMail">Email …</string>
     <string name="noConnection">Keine Internetverbindung</string>
     <string name="noConnectionClose">Beenden</string>
-
+	<string name="back">Zur\u00FCck</string>
+    <string name="forward">Vor</string>
+    <string name="share">Senden</string>
+    <string name="comment">Kommentar</string>
 </resources>
