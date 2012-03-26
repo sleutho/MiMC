@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener {
 
-	final int version = 5;
+	final int version = 6;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -143,14 +143,16 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 	final Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 
-			progressDialog.dismiss();
+			if (progressDialog.isShowing()) {
+				progressDialog.dismiss();
 
-			if (versionrequest == -1) {
-				ErrorNotification.noConnection(MainActivity.this);
-			} else if (versionrequest == -3) {
-				ErrorNotification.updateFailure(MainActivity.this);
-			} else if (versionrequest == -4) {
-				ErrorNotification.noupdate(MainActivity.this);
+				if (versionrequest == -1) {
+					ErrorNotification.noConnection(MainActivity.this);
+				} else if (versionrequest == -3) {
+					ErrorNotification.updateFailure(MainActivity.this);
+				} else if (versionrequest == -4) {
+					ErrorNotification.noupdate(MainActivity.this);
+				}
 			}
 		}
 	};
