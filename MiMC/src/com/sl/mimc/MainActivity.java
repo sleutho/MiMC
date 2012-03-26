@@ -1,24 +1,60 @@
 package com.sl.mimc;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnTouchListener {
+public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener {
+
+	final int version = 5;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		requestThread = null;
+
 		findViewById(R.id.latest).setOnTouchListener(this);
 		findViewById(R.id.contact).setOnTouchListener(this);
 		findViewById(R.id.archive).setOnTouchListener(this);
 		findViewById(R.id.categories).setOnTouchListener(this);
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.layout.mainmenu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.update:
+		{
+			update();
+			return true;
+		}
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	public void onClick(View v) {
@@ -46,7 +82,7 @@ public class MainActivity extends Activity implements OnTouchListener {
 				intent.putExtra(android.content.Intent.EXTRA_EMAIL,
 						new String[] { "sleuthold@beuth-hochschule.de" });
 				intent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-						"App contact");
+						getText(R.string.appContact));
 
 				intent = Intent.createChooser(intent,
 						getText(R.string.sendMail));
@@ -73,9 +109,9 @@ public class MainActivity extends Activity implements OnTouchListener {
 		if (!(v instanceof TextView)) {
 			return false;
 		}
-		
+
 		final TextView view = (TextView) v;
-		
+
 		String text = (String) view.getText();
 		int image = getActiveImage(text);
 
@@ -102,4 +138,78 @@ public class MainActivity extends Activity implements OnTouchListener {
 		}
 		return false;
 	}
+
+
+	final Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+
+			progressDialog.dismiss();
+
+			if (versionrequest == -1) {
+				ErrorNotification.noConnection(MainActivity.this);
+			} else if (versionrequest == -3) {
+				ErrorNotification.updateFailure(MainActivity.this);
+			} else if (versionrequest == -4) {
+				ErrorNotification.noupdate(MainActivity.this);
+			}
+		}
+	};
+	private void update() {
+
+		versionrequest = -1;
+		
+		progressDialog = ProgressDialog.show(this,
+				getText(R.string.progressTitle), getText(R.string.checkUpdate), true, true, this);
+
+		requestThread = new Thread(new Runnable() {
+			public void run() {
+
+				NBAPIResponse nbapi = new NBAPIResponse();
+				String response = nbapi.getText("https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=version");
+
+				JSONArray json = null;
+				try {
+					if (response != null)
+						json = new JSONArray(response);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+				if (json != null) {
+					try {
+							
+						JSONObject obj = json.getJSONObject(0);
+						versionrequest = obj.getInt("version");
+						
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				if (versionrequest > version)
+				{
+					Intent downloadIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( "http://public.beuth-hochschule.de/%7Esleuthold/files/android/MiMC.apk"));
+					startActivity(downloadIntent);
+				} else if (versionrequest != -1) {
+					versionrequest = -4;
+				}
+
+				handler.sendEmptyMessage(0);
+			}
+		});
+		requestThread.start();
+
+	}
+
+	public void onCancel(DialogInterface dialog) {
+		if (requestThread != null &&
+				requestThread.isAlive())
+			requestThread.interrupt();
+		versionrequest = -2;
+		handler.sendEmptyMessage(0);
+	}
+	
+	private int versionrequest;
+	private Thread requestThread;
+	private ProgressDialog progressDialog;
 }

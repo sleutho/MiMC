@@ -19,5 +19,10 @@
     <string name="forward">Forward</string>
     <string name="share">Share</string>
     <string name="comment">Comment</string>
+    <string name="update">Update App</string>
+    <string name="updateFailure">Update Error</string>
+    <string name="noupdate">You are up-to-date</string>
+    <string name="checkUpdate">Check for update</string>
+    <string name="appContact">Contact</string>
 
 </resources>

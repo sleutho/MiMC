@@ -20,4 +20,31 @@ public class ErrorNotification {
 		alert.show();
 	}
 
+	static void updateFailure(Context context) {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setMessage(context.getText(R.string.updateFailure))
+		.setCancelable(false)
+		.setPositiveButton(context.getText(R.string.noConnectionClose), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	static void noupdate(Context context) {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setMessage(context.getText(R.string.noupdate))
+		.setCancelable(false)
+		.setPositiveButton(context.getText(R.string.noConnectionClose), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
 }
