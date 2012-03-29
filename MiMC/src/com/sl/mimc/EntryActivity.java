@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,13 +19,16 @@ import android.widget.TextView;
 
 public class EntryActivity extends Activity implements DialogInterface.OnCancelListener {
 
-	final Handler handler = new Handler() {
+	private final Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 
 			Bundle data = msg.getData();
 			if (data.containsKey("onPageFinished"))	{		
 				if (progressDialog.isShowing())
 					progressDialog.dismiss();
+				
+				//we only need the WebViewClient for onPageFinished
+				webView.setWebViewClient(null);
 				return;
 			}
 		
@@ -75,7 +77,6 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 	}
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
 	    switch (item.getItemId()) {
 	        case R.id.back:
 	        {
@@ -163,8 +164,6 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 			}
 		});
 
-		
-
 		Intent intent = getIntent();
 		latest = intent.getExtras().getBoolean("latest", false);
 		category = "all";
@@ -191,7 +190,7 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 				if (latest) {
 
 					String response = nbapi
-							.getText("https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=latest");
+							.getText(latestLink);
 
 					JSONObject json = null;
 					try {
@@ -324,5 +323,6 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 	private String permalink;
 	private String category;
 	
+	private final String latestLink = "https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=latest";
 	private final String link = "https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=entry&tag=";
 }
