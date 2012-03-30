@@ -52,6 +52,17 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 		}
 	};
 	
+	final private WebViewClient pageFinishedViewClient = new WebViewClient() {
+		public void onPageFinished(WebView view, String url)
+		{
+			Message msg = handler.obtainMessage();
+			Bundle data = new Bundle();
+			data.putBoolean("onPageFinished", true);
+			msg.setData(data);
+			handler.sendMessage(msg);
+		}
+	};
+	
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.layout.entrymenu, menu);
@@ -153,16 +164,7 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setSupportZoom(true);
 		
-		webView.setWebViewClient(new WebViewClient() {
-			public void onPageFinished(WebView view, String url)
-			{
-				Message msg = handler.obtainMessage();
-				Bundle data = new Bundle();
-				data.putBoolean("onPageFinished", true);
-				msg.setData(data);
-				handler.sendMessage(msg);
-			}
-		});
+		webView.setWebViewClient(pageFinishedViewClient);
 
 		Intent intent = getIntent();
 		latest = intent.getExtras().getBoolean("latest", false);
@@ -234,6 +236,7 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 		
 		webView.clearView();
 		webView.invalidate();
+		webView.setWebViewClient(pageFinishedViewClient);
 		
 		requestThread = new Thread(new Runnable() {
 			public void run() {
