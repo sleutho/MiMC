@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener {
 
-	final int version = 6;
+	final int version = 9;
 
 	/** Called when the activity is first created. */
 	@Override
