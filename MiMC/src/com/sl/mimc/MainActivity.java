@@ -22,15 +22,13 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener {
 
-	final int version = 9;
+	final static int version = 10;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
-		requestThread = null;
 
 		findViewById(R.id.latest).setOnTouchListener(this);
 		findViewById(R.id.contact).setOnTouchListener(this);
@@ -212,6 +210,6 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 	}
 	
 	private int versionrequest;
-	private Thread requestThread;
+	private Thread requestThread = null;
 	private ProgressDialog progressDialog;
 }
