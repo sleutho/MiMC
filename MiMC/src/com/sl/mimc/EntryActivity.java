@@ -152,8 +152,6 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.entry);
 		
-		requestThread = null;
-
 		progressDialog = ProgressDialog.show(this,
 				getText(R.string.progressTitle), getText(R.string.progressMsg), true, true, this);
 
@@ -315,7 +313,7 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 	private TextView dateTextView;
 	private WebView webView;
 	
-	private Thread requestThread;
+	private Thread requestThread = null;
 
 	private boolean latest;
 	private String entryTag;
@@ -326,6 +324,6 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 	private String permalink;
 	private String category;
 	
-	private final String latestLink = "https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=latest";
-	private final String link = "https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=entry&tag=";
+	private static final String latestLink = "https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=latest";
+	private static final String link = "https://cgi.beuth-hochschule.de/~sleuthold/nb_api/nb_api.cgi?q=entry&tag=";
 }

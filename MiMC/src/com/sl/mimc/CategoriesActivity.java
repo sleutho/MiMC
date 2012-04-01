@@ -58,8 +58,6 @@ public class CategoriesActivity extends ListActivity implements DialogInterface.
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
 
-		requestThread = null;
-		
 		TextView titleTextView = (TextView) findViewById(R.id.textview);
 		titleTextView.setText(R.string.categories);
 
@@ -125,7 +123,7 @@ public class CategoriesActivity extends ListActivity implements DialogInterface.
 		
 	}
 	
-	private Thread requestThread;
+	private Thread requestThread = null;
 	private ProgressDialog progressDialog;
 	private static ArrayList<HashMap<String, String>> mylist;
 }

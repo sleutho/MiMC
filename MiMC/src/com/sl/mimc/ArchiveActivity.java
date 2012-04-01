@@ -59,8 +59,6 @@ public class ArchiveActivity extends ListActivity implements DialogInterface.OnC
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
 
-		requestThread = null;
-		
 		TextView titleTextView = (TextView) findViewById(R.id.textview);
 		titleTextView.setText(R.string.archive);
 
@@ -135,7 +133,7 @@ public class ArchiveActivity extends ListActivity implements DialogInterface.OnC
 		
 	}
 
-	private Thread requestThread;
+	private Thread requestThread = null;
 	private ProgressDialog progressDialog;
 	private static ArrayList<HashMap<String, String>> mylist;
 }

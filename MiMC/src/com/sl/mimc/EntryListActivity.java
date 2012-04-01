@@ -59,8 +59,6 @@ public class EntryListActivity extends ListActivity implements DialogInterface.O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list);
 		
-		requestThread = null;
-		
 		Bundle bundle = getIntent().getExtras();
 		category = bundle.getString("entryListTitle");
 
@@ -158,7 +156,7 @@ public class EntryListActivity extends ListActivity implements DialogInterface.O
 
 	}
 	
-	private Thread requestThread;
+	private Thread requestThread = null;
 	private String serverQuery;
 	private String category;
 	private ProgressDialog progressDialog;
