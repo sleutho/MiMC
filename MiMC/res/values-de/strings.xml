@@ -24,4 +24,5 @@
     <string name="noupdate">Du bist topaktuell</string>
     <string name="checkUpdate">Suche nach Update</string>
     <string name="appContact">Kontakt</string>
+    <string name="service_name">Sync Me &amp; Detroit</string>
 </resources>
