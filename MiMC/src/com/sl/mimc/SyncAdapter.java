@@ -66,20 +66,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 		SimpleDateFormat format = null;
 		try {
-			format = new SimpleDateFormat("%A, %B %d, %Y", Locale.GERMANY);
-		} finally {}
-
-		boolean notify = false;
-		try {
-			Date onRecord = format.parse(latestDateOnRecord);
-			Date latestDate = format.parse(date);
-
-			notify = onRecord.compareTo(latestDate) >= 0;
-
-		} catch (java.text.ParseException e) {
+			format = new SimpleDateFormat("EEEE, LL dd, yyyy", Locale.GERMANY);
+		} catch (	java.lang.IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-		notify = true;
+		finally {}
+		
+
+		boolean notify = false;
+		if (format != null) {
+			try {
+				Date onRecord = format.parse(latestDateOnRecord);
+				Date latestDate = format.parse(date);
+
+				notify = onRecord.compareTo(latestDate) >= 0;
+
+			} catch (java.text.ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		notify = true;//debug
 		if (notify) {
 
 			if (latestDateOnRecord.length() > 0) {
@@ -98,7 +104,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
 			SharedPreferences.Editor editor = settings.edit();
-			editor.putString("latestTagOnRecord", date);
+			editor.putString("latestDateOnRecord", date);
 			editor.commit();
 		}
 	}

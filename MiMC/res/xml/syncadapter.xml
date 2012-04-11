@@ -2,7 +2,7 @@
 
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
     android:contentAuthority="com.sl.mimc.content"
-    android:accountType="com.sl.mimc"
-    android:userVisible="false"
+    android:accountType="com.sl.mimc.account"
+    android:userVisible="true"
     android:supportsUploading="false"
  />
