@@ -34,6 +34,17 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 		findViewById(R.id.contact).setOnTouchListener(this);
 		findViewById(R.id.archive).setOnTouchListener(this);
 		findViewById(R.id.categories).setOnTouchListener(this);
+		
+		if (getIntent().hasExtra("latest")) {
+			Bundle extras = getIntent().getExtras();
+		
+			boolean launchLatest = extras.getBoolean("latest");
+			if (launchLatest) {
+				Intent intent = new Intent(this, EntryActivity.class);
+				intent.putExtra("latest", true);
+				startActivity(intent);
+			}
+		}
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -66,47 +66,45 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 		SimpleDateFormat format = null;
 		try {
-			format = new SimpleDateFormat("EEEE, LL dd, yyyy", Locale.GERMANY);
+			format = new SimpleDateFormat("EEEE, LLL d, yyyy", Locale.GERMANY);
 		} catch (	java.lang.IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		finally {}
 		
 
-		boolean notify = false;
-		if (format != null) {
+		boolean notify = true;
+		if (format != null && latestDateOnRecord.length() > 0) {
 			try {
 				Date onRecord = format.parse(latestDateOnRecord);
 				Date latestDate = format.parse(date);
 
-				notify = onRecord.compareTo(latestDate) >= 0;
+				notify = latestDate.compareTo(onRecord) > 0;
 
 			} catch (java.text.ParseException e) {
 				e.printStackTrace();
 			}
 		}
-		notify = true;//debug
+		notify = true;
 		if (notify) {
+			//notification
+			Intent intent = new Intent(mContext, MainActivity.class);
+			intent.putExtra("latest", true);
+			
+			PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
 
-			if (latestDateOnRecord.length() > 0) {
-				//notification
-				Intent intent = new Intent(mContext, MainActivity.class);
-				PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+			Notification notification = new Notification(R.drawable.ic_launcher, title, 0);
+			notification.setLatestEventInfo(mContext, title, date, contentIntent);
 
-				Notification notification = new Notification(R.drawable.ic_launcher, title, 0);
-				notification.setLatestEventInfo(mContext, title, date, contentIntent);
+			NotificationManager mNotificationManager = 
+				(NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-				NotificationManager mNotificationManager = 
-					(NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
-				mNotificationManager.notify(SYNC_LATEST_ID, notification);
-			}
-
-
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putString("latestDateOnRecord", date);
-			editor.commit();
+			mNotificationManager.notify(SYNC_LATEST_ID, notification);
 		}
+		
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("latestDateOnRecord", date);
+		editor.commit();
 	}
 
 }
