@@ -2,7 +2,5 @@
 bin/*
 gen/*
 *.apk
-*.class
-*.dex
 .classpath
 .project

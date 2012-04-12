@@ -12,7 +12,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	{
 		super.onCreate(icicle);
 		
-		String userName = "username";
+		String userName = "Anonymous account";
 		String password = "password";
 		Account newAccount = new Account(userName, "com.sl.mimc.account");
 	    AccountManager accountManager = AccountManager.get(this);

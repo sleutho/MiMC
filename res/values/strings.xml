@@ -25,5 +25,6 @@
     <string name="checkUpdate">Check for update</string>
     <string name="appContact">Contact</string>
     <string name="service_name">Sync Me &amp; Detroit</string>
+    <string name="oneAccount">Only one account supported</string>
 
 </resources>

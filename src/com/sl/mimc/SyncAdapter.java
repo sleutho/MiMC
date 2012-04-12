@@ -93,8 +93,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			
 			PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
 
-			Notification notification = new Notification(R.drawable.ic_launcher, title, 0);
+			Notification notification = new Notification(R.drawable.notify, title, 0);
 			notification.setLatestEventInfo(mContext, title, date, contentIntent);
+			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 			NotificationManager mNotificationManager = 
 				(NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
