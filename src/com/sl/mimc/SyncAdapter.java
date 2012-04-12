@@ -85,7 +85,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				e.printStackTrace();
 			}
 		}
-		notify = true;
+
 		if (notify) {
 			//notification
 			Intent intent = new Intent(mContext, MainActivity.class);

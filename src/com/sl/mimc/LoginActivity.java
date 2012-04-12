@@ -5,6 +5,7 @@ import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class LoginActivity extends AccountAuthenticatorActivity {
 
@@ -12,10 +13,28 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	{
 		super.onCreate(icicle);
 		
-		String userName = "Anonymous account";
+		AccountManager accountManager = AccountManager.get(this);
+		Account[] accounts = accountManager.getAccountsByType("com.sl.mimc.account");
+
+		if (accounts.length > 0) {
+
+			runOnUiThread(new Runnable() {
+				public void run() {
+					// Display toast for "Only one account supported."
+					// Redirect to account management.
+					Toast.makeText(LoginActivity.this,
+							R.string.oneAccount, Toast.LENGTH_LONG).show();
+				}
+			});
+			Intent i = new Intent();
+			this.setResult(RESULT_CANCELED, i);
+
+			finish();
+		}
+		
+		String userName = "Anonymous";
 		String password = "password";
 		Account newAccount = new Account(userName, "com.sl.mimc.account");
-	    AccountManager accountManager = AccountManager.get(this);
 	    accountManager.addAccountExplicitly(newAccount,password, null);
 		
 	    Intent i = new Intent();
