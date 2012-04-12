@@ -1,0 +1,4 @@
+.settings/*
+*.apk
+bin/*
+gen/*

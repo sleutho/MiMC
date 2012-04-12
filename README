@@ -1,9 +1,0 @@
-MiMC - Me in Motor City
-
-This is an Android App that interfaces with my blog:
-
-http://public.beuth-hochschule.de/~sleuthold/blog
-
-
-The nanoblogger driven blog is exposed via a python cgi-bin script.
-The python script implements a web API for the Android app to fetch data.
