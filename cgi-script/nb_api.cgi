@@ -15,7 +15,7 @@ locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 # definitions
 blog_home = '../../public_html/blog'
 blog_link = 'http://public.beuth-hochschule.de/~sleuthold/blog'
-version = 9
+version = 10
 
 # debugging
 if not 'QUERY_STRING' in os.environ:
@@ -25,63 +25,63 @@ def getargdict():
     args = {}
     if 'QUERY_STRING' in os.environ:
         arglist = os.environ['QUERY_STRING'].split('&')
-	for pair in arglist:
-	     elem = pair.split('=')
-	     args[elem[0]] = elem[1]
+    for pair in arglist:
+         elem = pair.split('=')
+         args[elem[0]] = elem[1]
     return args
 
 def getcategories(root):
     cats = []
     for path in glob.glob(root + '/data/cat_*.db'):
-	i = 0
-	cat = ''
-	for line in fileinput.input(path):
-	    if i == 0:
-	        cat = line[0:-1]
-	    i += 1
-	category = {}
-	category['name'] = cat
-	category['count'] = i - 1
-	cats.append(category)
+    i = 0
+    cat = ''
+    for line in fileinput.input(path):
+        if i == 0:
+            cat = line[0:-1]
+        i += 1
+    category = {}
+    category['name'] = cat
+    category['count'] = i - 1
+    cats.append(category)
     return sorted(cats, key=lambda k: k['name']);
 
 def getcategoryentries(root, category):
     category_entries = []
     entryfiles = []
     for path in glob.glob(root + '/data/cat_*.db'):
-	i = 0
-	cat = ''
-	files = []
-	for line in fileinput.input(path):
-	    if i == 0:
-	        cat = line[0:-1]
-	    if i > 0:
-	        files.append(line[0: line.find('>') ])
+    i = 0
+    cat = ''
+    files = []
+    for line in fileinput.input(path):
+        if i == 0:
+            cat = line[0:-1]
+        if i > 0:
+            files.append(line[0: line.find('>') ])
             i += 1
-	if cat == category:
-	    entryfiles = files
+    if cat == category:
+        entryfiles = files
     for entryfile in entryfiles:
-	path = root + '/data/' + entryfile
-	entry = {}
-	entry['tag'] = entryfile
-	entry['data'] = getentrymetadata(path)
-	category_entries.append(entry)
+    path = root + '/data/' + entryfile
+    entry = {}
+    entry['tag'] = entryfile
+    entry['data'] = getentrymetadata(path)
+    category_entries.append(entry)
 
     sortedList = sorted(
         category_entries, 
-	key=lambda k: datetime.strptime(k['data']['DATE'], '%A, %B %d, %Y'), 
-	reverse=True)
+    key=lambda k: datetime.strptime(k['data']['DATE'], '%A, %B %d, %Y'), 
+    reverse=True)
     
     nextE = ''
     pos = 0
     for entry in sortedList:
         entry['data']['NEXT'] = nextE
-	nextE = entry['tag']
-	if pos == len(sortedList)-1:
-	    entry['data']['BACK'] = ''
+    nextE = entry['tag']
+    if pos == len(sortedList)-1:
+        entry['data']['BACK'] = ''
         else:
-	    pos += 1
-	    entry['data']['BACK'] = sortedList[pos]['tag']
+        pos += 1
+        entry['data']['BACK'] = sortedList[pos]['tag']
 
     return sortedList;
 
@@ -95,17 +95,17 @@ def getarchive(root):
     gather = {}
     for path in glob.glob(root + '/data/*.txt'):
         entry = os.path.split(path)[1]
-	year = entry[0:4]
-	if year in gather:
-	    gather[year] = gather[year] + 1
-	else:
-	    gather[year] = 1
+    year = entry[0:4]
+    if year in gather:
+        gather[year] = gather[year] + 1
+    else:
+        gather[year] = 1
     
     for year in gather.keys():
         item = {}
-	item['year'] = year
-	item['count'] = gather[year]
-	archive.append(item)
+    item['year'] = year
+    item['count'] = gather[year]
+    archive.append(item)
 
     archive = sorted(archive,
     key=lambda k: k['year'], reverse=True)
@@ -118,25 +118,25 @@ def getarchiveentries(root, year):
     year_entries = []
     for path in glob.glob(root + '/data/' + year + '*.txt'):
         entry = {}
-	entry['tag'] = os.path.split(path)[1]
-	entry['data'] = getentrymetadata(path)
-	year_entries.append(entry)
+    entry['tag'] = os.path.split(path)[1]
+    entry['data'] = getentrymetadata(path)
+    year_entries.append(entry)
     
     sortedList = sorted(
         year_entries, 
-	key=lambda k: datetime.strptime(k['data']['DATE'], '%A, %B %d, %Y'), 
-	reverse=True)
+    key=lambda k: datetime.strptime(k['data']['DATE'], '%A, %B %d, %Y'), 
+    reverse=True)
     
     nextE = ''
     pos = 0
     for entry in sortedList:
         entry['data']['NEXT'] = nextE
-	nextE = entry['tag']
-	if pos == len(sortedList)-1:
-	    entry['data']['BACK'] = ''
+    nextE = entry['tag']
+    if pos == len(sortedList)-1:
+        entry['data']['BACK'] = ''
         else:
-	    pos += 1
-	    entry['data']['BACK'] = sortedList[pos]['tag']
+        pos += 1
+        entry['data']['BACK'] = sortedList[pos]['tag']
 
     return sortedList;
 
@@ -159,7 +159,7 @@ def getentry(root, entry):
 def getentrynav(root, entry):
     entries = []
     for path in glob.glob(root + '/data/*.txt'):
-	entries.append(os.path.split(path)[1])
+    entries.append(os.path.split(path)[1])
     entries.sort()
     index = entries.index(entry)
     nav = {}
@@ -177,7 +177,7 @@ def getentrynav(root, entry):
 def getlatest(root):
     entries = []
     for path in glob.glob(root + '/data/*.txt'):
-	entries.append(path)
+    entries.append(path)
     entries.sort()
     latest = {}
     latest['tag'] = os.path.split(entries[-1])[1]
@@ -193,11 +193,11 @@ def getentrymetadata(entry_path):
     entry = {}
     stop = False
     for line in fileinput.input(entry_path):
-	if line[0:5] == '-----':
-	    stop = True
-	if stop == False:
+    if line[0:5] == '-----':
+        stop = True
+    if stop == False:
             entry_meta = line.split(':', 1)
-	    entry[entry_meta[0]] = entry_meta[1].rstrip('\n').strip(' ')
+        entry[entry_meta[0]] = entry_meta[1].rstrip('\n').strip(' ')
     entry['PERMALINK'] = getlink(entry_path, entry['TITLE'])
     return entry
 
@@ -257,11 +257,11 @@ response = ''
 if 'q' in query:
     if query['q'] == 'version':
         output += getjsonheader()
-	currentversion = []
-	v = {}
-	v['version'] = version
-	currentversion.append(v)
-	response = json.dumps(currentversion, indent=4)
+    currentversion = []
+    v = {}
+    v['version'] = version
+    currentversion.append(v)
+    response = json.dumps(currentversion, indent=4)
     elif query['q'] == 'categories':
         output += getjsonheader()
         if 'category' in query:
@@ -279,7 +279,7 @@ if 'q' in query:
     elif query['q'] == 'details':
         output += getjsonheader()
         entryList = []
-	if 'year' in query:
+    if 'year' in query:
             entryList= getarchiveentries(blog_home, query['year'])
         elif 'category' in query:
             entryList = getcategoryentries(blog_home, query['category'])
@@ -287,22 +287,22 @@ if 'q' in query:
             entryList = getall(blog_home)
        
         for entry in entryList:
-	    if entry['tag'] == query['tag']:
-	        response = entry
-		break
-	
-	response = json.dumps(response, indent=4)
+        if entry['tag'] == query['tag']:
+            response = entry
+        break
+    
+    response = json.dumps(response, indent=4)
     elif query['q'] == 'entry':
         if 'tag' in query:
-	    response = getentry(blog_home, query['tag'])
+        response = getentry(blog_home, query['tag'])
     elif query['q'] == 'nav':
         if 'tag' in query:
             output += getjsonheader()
-	    response = getentrynav(blog_home, query['tag'])
+        response = getentrynav(blog_home, query['tag'])
             response = json.dumps(response, sort_keys=True, indent=4)
     elif query['q'] == 'latest':
         output += getjsonheader()
-	response = getlatest(blog_home)
+    response = getlatest(blog_home)
         response = json.dumps(response, sort_keys=True, indent=4)
 
     output += response
@@ -310,8 +310,8 @@ if 'q' in query:
 if 'format' in query:
     if query['format'] == 'html':
         output  = gethtmlheader(True) + output
-	# output += getenv()
-	output += gethtmlfooter(True)
+    # output += getenv()
+    output += gethtmlfooter(True)
 
 
 sys.stdout.write(output)
