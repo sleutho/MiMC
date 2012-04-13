@@ -1,6 +1,4 @@
-## MiMC - Me in Motor City
-
-### Android App for a NanoBlogger webblog:
+## Android App for a NanoBlogger webblog
 
 http://public.beuth-hochschule.de/~sleuthold/blog
 
