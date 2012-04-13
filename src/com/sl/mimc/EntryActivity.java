@@ -46,7 +46,7 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 				date = data.getString("newDate");
 				entryBackTag = data.getString("newBack");
 				entryForwardTag = data.getString("newForward");
-				permalink = data.getString("newLink");
+				permalink = data.getString("permalink");
 			}
 
 			titleTextView.setText(data.getString("title"));
@@ -56,6 +56,8 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 			if (data.getString("title").length() == 0) {
 				ErrorNotification.noConnection(EntryActivity.this);
 			}
+			
+			if (date == null) return;
 			
 			SharedPreferences settings = getSharedPreferences(SYNC_LATEST, 0);
 			String latestDateOnRecord = settings.getString("latestDateOnRecord", "");
