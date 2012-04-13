@@ -4,6 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.OnAccountsUpdateListener;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -12,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +24,12 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener {
+public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener, OnAccountsUpdateListener {
 
 	final static int version = 10;
+	
+	final String accountType = "com.sl.mimc.account";
+	final String[] authority = {"com.sl.mimc.content"};
 
 	/** Called when the activity is first created. */
 	@Override
@@ -46,6 +53,17 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 			}
 		}
 	}
+	
+	public void onDestroy() {
+		super.onDestroy();
+		
+		try {
+			AccountManager accountManager = AccountManager.get(this);
+			accountManager.removeOnAccountsUpdatedListener(this);
+		} catch (IllegalStateException e) {
+			//not added, never mind
+		}
+	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -61,9 +79,52 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 			update();
 			return true;
 		}
+		case R.id.sync:
+		{
+			AccountManager accountManager = AccountManager.get(this);
+			Account[] accounts = accountManager.getAccountsByType(accountType);
+
+			if (accounts.length == 0) {
+				
+				try {
+					accountManager.addOnAccountsUpdatedListener(this, null, true);
+				}
+				catch (IllegalStateException e) {
+					//already added, do nothing
+				}
+				
+				Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
+				intent.putExtra(Settings.EXTRA_AUTHORITIES, authority);
+				startActivity(intent);
+			} else {
+				showSyncSettings();
+			}
+			
+			return true;
+		}
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	public void onAccountsUpdated(Account[] accounts){
+		
+		for (int i = 0; i < accounts.length; ++i) {
+			if (accounts[i].type == accountType) {
+				AccountManager accountManager = AccountManager.get(this);
+				accountManager.removeOnAccountsUpdatedListener(this);
+				
+				showSyncSettings();
+				return;
+			}
+		}
+	}
+	
+	private void showSyncSettings() {
+		
+		Intent intent = new Intent(Settings.ACTION_SYNC_SETTINGS);
+		intent.putExtra(Settings.EXTRA_AUTHORITIES, authority);
+		startActivity(intent);
 	}
 
 	public void onClick(View v) {

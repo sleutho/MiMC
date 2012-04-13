@@ -13,6 +13,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +34,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 	public void onPerformSync(Account arg0, Bundle arg1, String arg2,
 			ContentProviderClient arg3, SyncResult arg4) {
+		
+		final long pollFrequency = 3600;//74057;
+		ContentResolver.addPeriodicSync(arg0, arg2, arg1, pollFrequency);
 
 		NBAPIResponse nbapi = new NBAPIResponse();
 		String response = nbapi.getText(latestLink);
@@ -63,16 +67,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 		SharedPreferences settings = mContext.getSharedPreferences(SYNC_LATEST, 0);
 		String latestDateOnRecord = settings.getString("latestDateOnRecord", "");
 
-
 		SimpleDateFormat format = null;
 		try {
 			format = new SimpleDateFormat("EEEE, LLL d, yyyy", Locale.GERMANY);
-		} catch (	java.lang.IllegalArgumentException e) {
+		} catch (java.lang.IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-		finally {}
 		
-
 		boolean notify = true;
 		if (format != null && latestDateOnRecord.length() > 0) {
 			try {
@@ -85,7 +86,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				e.printStackTrace();
 			}
 		}
-
+		notify = true;//debug
 		if (notify) {
 			//notification
 			Intent intent = new Intent(mContext, MainActivity.class);

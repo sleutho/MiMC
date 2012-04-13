@@ -1,5 +1,9 @@
 package com.sl.mimc;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +11,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +24,8 @@ import android.widget.TextView;
 
 public class EntryActivity extends Activity implements DialogInterface.OnCancelListener {
 
+	private static final String SYNC_LATEST = "com.sl.mimc.sync";
+	
 	private final Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 
@@ -48,6 +55,35 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 
 			if (data.getString("title").length() == 0) {
 				ErrorNotification.noConnection(EntryActivity.this);
+			}
+			
+			SharedPreferences settings = getSharedPreferences(SYNC_LATEST, 0);
+			String latestDateOnRecord = settings.getString("latestDateOnRecord", "");
+
+			SimpleDateFormat format = null;
+			try {
+				format = new SimpleDateFormat("EEEE, LLL d, yyyy", Locale.GERMANY);
+			} catch (java.lang.IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+			
+			boolean notify = false;
+			if (format != null && latestDateOnRecord.length() > 0) {
+				try {
+					Date onRecord = format.parse(latestDateOnRecord);
+					Date latestDate = format.parse(date);
+
+					notify = latestDate.compareTo(onRecord) > 0;
+
+				} catch (java.text.ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if (notify || latestDateOnRecord.length() == 0) {
+				SharedPreferences.Editor editor = settings.edit();
+				editor.putString("latestDateOnRecord", date);
+				editor.commit();
 			}
 		}
 	};

@@ -19,11 +19,12 @@
     <string name="forward">Vor</string>
     <string name="share">Senden</string>
     <string name="comment">Kommentar</string>
-    <string name="update">Update App</string>
+    <string name="update">Update</string>
     <string name="updateFailure">Update fehlgeschlagen</string>
     <string name="noupdate">Du bist topaktuell</string>
     <string name="checkUpdate">Suche nach Update</string>
     <string name="appContact">Kontakt</string>
     <string name="service_name">Sync Me &amp; Detroit</string>
     <string name="oneAccount">Nur ein Account zulaessig</string>
+    <string name="sync">Sync</string>
 </resources>
