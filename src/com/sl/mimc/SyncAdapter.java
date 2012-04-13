@@ -35,7 +35,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 	public void onPerformSync(Account arg0, Bundle arg1, String arg2,
 			ContentProviderClient arg3, SyncResult arg4) {
 		
-		final long pollFrequency = 3600;//74057;
+		final long pollFrequency = 74057;
 		ContentResolver.addPeriodicSync(arg0, arg2, arg1, pollFrequency);
 
 		NBAPIResponse nbapi = new NBAPIResponse();
@@ -86,7 +86,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 				e.printStackTrace();
 			}
 		}
-		notify = true;//debug
+
 		if (notify) {
 			//notification
 			Intent intent = new Intent(mContext, MainActivity.class);

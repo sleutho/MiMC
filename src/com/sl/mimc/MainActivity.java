@@ -110,7 +110,7 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 	public void onAccountsUpdated(Account[] accounts){
 		
 		for (int i = 0; i < accounts.length; ++i) {
-			if (accounts[i].type == accountType) {
+			if (accountType.compareTo(accounts[i].type) == 0) {
 				AccountManager accountManager = AccountManager.get(this);
 				accountManager.removeOnAccountsUpdatedListener(this);
 				
