@@ -91,6 +91,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			//notification
 			Intent intent = new Intent(mContext, MainActivity.class);
 			intent.putExtra("latest", true);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			
 			PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
 
