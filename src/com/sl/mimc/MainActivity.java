@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener, OnAccountsUpdateListener {
 
-	final static int version = 12;
+	final static int version = 13;
 	
 	final String accountType = "com.sl.mimc.account";
 	final String[] authority = {"com.sl.mimc.content"};
@@ -117,10 +117,7 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 				
 				ContentResolver.setIsSyncable(accounts[i], authority[0], 1);
 				ContentResolver.setSyncAutomatically(accounts[i], authority[0], true);
-				
-				Bundle params = new Bundle();
-			    params.putBoolean(ContentResolver.SYNC_EXTRAS_DO_NOT_RETRY, true);
-				ContentResolver.requestSync(accounts[i], authority[0], params);
+				ContentResolver.requestSync(accounts[i], authority[0], new Bundle());
 				
 				showSyncSettings();
 				return;

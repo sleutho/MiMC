@@ -36,7 +36,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 			ContentProviderClient arg3, SyncResult arg4) {
 		
 		final long pollFrequency = 74057;
-		ContentResolver.addPeriodicSync(arg0, arg2, arg1, pollFrequency);
+		ContentResolver.addPeriodicSync(arg0, arg2, new Bundle(), pollFrequency);
 
 		NBAPIResponse nbapi = new NBAPIResponse();
 		String response = nbapi.getText(latestLink);
