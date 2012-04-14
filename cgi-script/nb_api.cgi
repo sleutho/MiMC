@@ -15,7 +15,7 @@ locale.setlocale(locale.LC_TIME, 'de_DE.UTF-8')
 # definitions
 blog_home = '../../public_html/blog'
 blog_link = 'http://public.beuth-hochschule.de/~sleuthold/blog'
-version = 11
+version = 12
 
 # debugging
 if not 'QUERY_STRING' in os.environ:

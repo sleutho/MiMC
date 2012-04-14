@@ -9,6 +9,7 @@ import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -26,7 +27,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener, OnAccountsUpdateListener {
 
-	final static int version = 11;
+	final static int version = 12;
 	
 	final String accountType = "com.sl.mimc.account";
 	final String[] authority = {"com.sl.mimc.content"};
@@ -113,6 +114,13 @@ public class MainActivity extends Activity implements OnTouchListener, DialogInt
 			if (accountType.compareTo(accounts[i].type) == 0) {
 				AccountManager accountManager = AccountManager.get(this);
 				accountManager.removeOnAccountsUpdatedListener(this);
+				
+				ContentResolver.setIsSyncable(accounts[i], authority[0], 1);
+				ContentResolver.setSyncAutomatically(accounts[i], authority[0], true);
+				
+				Bundle params = new Bundle();
+			    params.putBoolean(ContentResolver.SYNC_EXTRAS_DO_NOT_RETRY, true);
+				ContentResolver.requestSync(accounts[i], authority[0], params);
 				
 				showSyncSettings();
 				return;
