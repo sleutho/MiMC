@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnTouchListener, DialogInterface.OnCancelListener, OnAccountsUpdateListener {
 
-	final static int version = 13;
+	final static int version = 14;
 	
 	final String accountType = "com.sl.mimc.account";
 	final String[] authority = {"com.sl.mimc.content"};
