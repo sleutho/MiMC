@@ -182,6 +182,15 @@ public class EntryActivity extends Activity implements DialogInterface.OnCancelL
 		handler.sendMessage(msg);
 	}
 	
+	public void onDestroy() {
+		super.onDestroy();
+		
+		if (webView != null) {
+			webView.clearCache(true);
+			webView.clearHistory();
+		}
+	}
+	
 	public void onCancel (DialogInterface dialog) {
 		finish();
 	}
