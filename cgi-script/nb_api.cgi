@@ -69,7 +69,7 @@ def getcategoryentries(root, category):
 
     sortedList = sorted(
         category_entries, 
-        key=lambda k: datetime.strptime(k['data']['DATE'], '%A, %B %d, %Y'), 
+        key=lambda k: k['tag'], 
         reverse=True)
     
     nextE = ''
@@ -124,7 +124,7 @@ def getarchiveentries(root, year):
     
     sortedList = sorted(
         year_entries, 
-        key=lambda k: datetime.strptime(k['data']['DATE'], '%A, %B %d, %Y'), 
+        key=lambda k: k['tag'], 
         reverse=True)
     
     nextE = ''
