@@ -69,7 +69,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 		SimpleDateFormat format = null;
 		try {
-			format = new SimpleDateFormat("EEEE, LLL d, yyyy", Locale.GERMANY);
+			format = new SimpleDateFormat("EEEE, MMM d, yyyy", Locale.GERMANY);
 		} catch (java.lang.IllegalArgumentException e) {
 			e.printStackTrace();
 		}
