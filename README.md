@@ -1,5 +1,5 @@
-## Android App for a NanoBlogger weblog
-
+Android App for a NanoBlogger weblog
+==========
     http://public.beuth-hochschule.de/~sleuthold/blog
 
 
